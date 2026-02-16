@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Edit Booking{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+<div class="col-md-6">
+<div class="card p-4">
+<h2 class="text-center mb-4">Edit Booking</h2>
+<form method="POST">
+<input type="text" name="source" class="form-control mb-3" placeholder="Source City" value="{{ booking[1] }}" required>
+<input type="text" name="destination" class="form-control mb-3" placeholder="Destination City" value="{{ booking[2] }}" required>
+<input type="date" name="date" class="form-control mb-3" value="{{ booking[3] }}" required>
+<input type="text" name="user_phone" class="form-control mb-3" placeholder="Contact Number" value="{{ booking[5] }}" required>
+<button type="submit" class="btn btn-primary w-100">Update Booking</button>
+</form>
+</div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="text-center mt-5">
+<h1>Welcome to Bus Ticket System</h1>
+<p>Book your tickets easily and securely</p>
+{% if not session.get('user') %}
+<a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
+{% endif %}
+</div>
+{% endblock %}
