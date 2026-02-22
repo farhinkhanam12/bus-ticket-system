@@ -44,7 +44,7 @@ def generate_ticket_code():
 # -------------------- ROUTES --------------------
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return "Bus Ticket System Running"
 
 @app.route('/register', methods=['GET','POST'])
 def register():
