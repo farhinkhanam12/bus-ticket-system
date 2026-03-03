@@ -12,25 +12,43 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: #f4f6f9;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            min-height: 100vh;
         }
-        .card {
-            border: none;
-            border-radius: 15px;
+
+        .main-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.8s ease-in-out;
         }
-        .navbar-brand {
-            font-weight: 600;
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .navbar {
+            border-radius: 0 0 20px 20px;
+        }
+
+        footer {
+            color: white;
+            text-align: center;
+            margin-top: 40px;
+            padding-bottom: 20px;
         }
     </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+<nav class="navbar navbar-dark bg-dark shadow p-3">
     <div class="container">
-        <a class="navbar-brand" href="/">🚌 Bus Ticket System</a>
-        <div class="ms-auto">
+        <span class="navbar-brand fw-bold">🚌 Bus Booking System</span>
+
+        <div>
             <a href="/dashboard" class="btn btn-outline-light btn-sm me-2">Dashboard</a>
             <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
         </div>
@@ -38,11 +56,13 @@
 </nav>
 
 <div class="container mt-5">
-    {% block content %}{% endblock %}
+    <div class="main-card">
+        {% block content %}{% endblock %}
+    </div>
 </div>
 
-<footer class="text-center mt-5 mb-3 text-muted">
-    © 2026 Cloud-Based Bus Booking System
+<footer>
+    © 2026 Cloud Based Bus Booking System
 </footer>
 
 </body>
