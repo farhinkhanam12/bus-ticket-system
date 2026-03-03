@@ -1,18 +1,14 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+import os
+from flask import Flask, render_template, request, redirect, session
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-import random
-import string
+import random, string
 
-import os
-app = Flask(__name__,template_folder=os.path.join(os.getcwd(), "templates"))
-app.secret_key = "supersecretkey"
-
-import os
+app = Flask(__name__, template_folder=os.path.join(os.getcwd(), "templates"))
+app.secret_key = os.environ.get("SECRET_KEY", "supersecretkey")
 
 DATABASE = os.path.join(os.getcwd(), "database.db")
 TICKET_PRICE = 100
-
 
 # ---------------- DATABASE ----------------
 def init_db():
