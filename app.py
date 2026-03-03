@@ -5,7 +5,7 @@ import random
 import string
 
 app = Flask(__name__)
-app.secret_key = "mysecretkey123"
+app.secret_key = "supersecretkey"
 
 DATABASE = "database.db"
 TICKET_PRICE = 100
@@ -95,6 +95,10 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
+        if not email or not password:
+            message = "Please fill all fields"
+            return render_template("login.html", message=message)
+
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users WHERE email=?", (email,))
@@ -107,8 +111,7 @@ def login():
         else:
             message = "Invalid credentials"
 
-    return render_template("login.html", message=message)
-
+    return render_template("login.html", message=message) 
 
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
