@@ -7,45 +7,44 @@ import string
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
-DATABASE = "database.db"
+import os
+
+DATABASE = os.path.join(os.getcwd(), "database.db")
 TICKET_PRICE = 100
 
 
 # ---------------- DATABASE ----------------
 def init_db():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
 
-    # Users table
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS users(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        email TEXT UNIQUE,
-        password TEXT
-    )
-    """)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            email TEXT UNIQUE,
+            password TEXT
+        )
+        """)
 
-    # Bookings table
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS bookings(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        source TEXT,
-        destination TEXT,
-        date TEXT,
-        user_email TEXT,
-        user_phone TEXT,
-        ticket_code TEXT,
-        price REAL
-    )
-    """)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS bookings(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            source TEXT,
+            destination TEXT,
+            date TEXT,
+            user_email TEXT,
+            user_phone TEXT,
+            ticket_code TEXT,
+            price REAL
+        )
+        """)
 
-    conn.commit()
-    conn.close()
-
-
-init_db()
-
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print("Database error:", e)
 
 # ---------------- HELPERS ----------------
 def generate_ticket_code():
@@ -247,4 +246,3 @@ def edit_booking(id):
     return render_template("edit_booking.html", booking=booking)
 
 
-# ---------------- RUN ----------------
