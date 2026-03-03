@@ -147,32 +147,41 @@ def booking():
     message = ""
 
     if request.method == "POST":
-        source = request.form["source"]
-        destination = request.form["destination"]
-        date = request.form["date"]
-        phone = request.form["user_phone"]
+        try:
+            source = request.form.get("source")
+            destination = request.form.get("destination")
+            date = request.form.get("date")
+            phone = request.form.get("user_phone")
 
-        ticket_code = generate_ticket_code()
-        price = TICKET_PRICE
+            ticket_code = generate_ticket_code()
+            price = TICKET_PRICE
 
-        conn = sqlite3.connect(DATABASE)
-        cursor = conn.cursor()
+            conn = sqlite3.connect(DATABASE)
+            cursor = conn.cursor()
 
-        cursor.execute("""
-        INSERT INTO bookings
-        (source,destination,date,user_email,user_phone,ticket_code,price)
-        VALUES(?,?,?,?,?,?,?)
-        """, (source, destination, date,
-              session["user"], phone,
-              ticket_code, price))
+            cursor.execute("""
+            INSERT INTO bookings
+            (source, destination, date, user_email, user_phone, ticket_code, price)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (
+                source,
+                destination,
+                date,
+                session["user"],
+                phone,
+                ticket_code,
+                price
+            ))
 
-        conn.commit()
-        conn.close()
+            conn.commit()
+            conn.close()
 
-        message = f"Ticket Booked! Code: {ticket_code} | Price ₹{price}"
+            message = f"Ticket Booked! Code: {ticket_code} | ₹{price}"
+
+        except Exception as e:
+            message = f"Error: {e}"
 
     return render_template("booking.html", message=message)
-
 
 # ---------------- VIEW BOOKINGS ----------------
 @app.route("/view_bookings")
@@ -180,17 +189,23 @@ def view_bookings():
     if "user" not in session:
         return redirect("/login")
 
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM bookings WHERE user_email=?",
-        (session["user"],)
-    )
-    bookings = cursor.fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT * FROM bookings WHERE user_email=?",
+            (session["user"],)
+        )
+
+        bookings = cursor.fetchall()
+        conn.close()
+
+    except Exception as e:
+        bookings = []
+        print("Error loading bookings:", e)
 
     return render_template("view_bookings.html", bookings=bookings)
-
 
 # ---------------- DELETE ----------------
 @app.route("/delete_booking/<int:id>")
