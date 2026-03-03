@@ -92,8 +92,8 @@ def login():
     message = ""
 
     if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+        email = request.form.get("email")
+        password = request.form.get("password")
 
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
