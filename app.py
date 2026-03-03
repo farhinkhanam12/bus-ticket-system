@@ -4,7 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import random
 import string
 
-app = Flask(__name__)
+import os
+app = Flask(__name__,template_folder=os.path.join(os.getcwd(), "templates"))
 app.secret_key = "supersecretkey"
 
 import os
